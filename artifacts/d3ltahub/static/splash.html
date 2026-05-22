@@ -1,295 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClassLink LaunchPad</title>
-  <link rel="icon" href="https://www.classlink.com/hubfs/classlink-favicon.png" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ClassLink | Identity &amp; Access Management for Education</title>
+  <meta name="description" content="ClassLink is a provider of identity and access management products offering instant access to apps and files with SSO, class rostering, account provisioning, and analytics."/>
+  <link rel="icon" href="https://cdn.prod.website-files.com/5d6db64572061db9c481aaeb/60df10e6f5ffea4eace64375_classlink-favicon.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #0a3d62;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    /* Top bar */
-    .topbar {
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', 'Open Sans', Arial, sans-serif; color: #333; background: #fff; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 999;
       background: #fff;
-      padding: 0 32px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+      border-bottom: 1px solid #e8e8e8;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
     }
-    .topbar-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
+    .nav-logo { display: flex; align-items: center; gap: 0; }
+    .nav-logo img { height: 38px; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      font-size: .93rem; font-weight: 700; color: #1a1a1a;
+      letter-spacing: .3px; transition: color .15s;
     }
-    .topbar-logo svg { width: 36px; height: 36px; }
-    .topbar-logo span {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #1565c0;
+    .nav-links a:hover { color: #1e6dc0; }
+    .nav-links .has-dropdown { position: relative; cursor: pointer; }
+    .nav-links .has-dropdown::after { content: " ▾"; font-size: .7rem; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .btn-login {
+      padding: 9px 22px; border: 2px solid #1e6dc0;
+      border-radius: 6px; font-size: .9rem; font-weight: 700;
+      color: #1e6dc0; transition: all .15s;
+    }
+    .btn-login:hover { background: #1e6dc0; color: #fff; }
+    .btn-demo {
+      padding: 9px 22px; background: #1e6dc0;
+      border: 2px solid #1e6dc0; border-radius: 6px;
+      font-size: .9rem; font-weight: 700; color: #fff; transition: all .15s;
+    }
+    .btn-demo:hover { background: #1558a8; border-color: #1558a8; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0a2d6e 0%, #1e6dc0 55%, #2d9ee0 100%);
+      min-height: 88vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 80px 40px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: url('https://cdn.prod.website-files.com/5d6db64572061db9c481aaeb/5f5c8e4e5ef18b6a75c76bda_grid-pattern.png') repeat;
+      opacity: .04;
+    }
+    /* Decorative circles */
+    .hero::after {
+      content: "";
+      position: absolute; right: -120px; bottom: -120px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: rgba(255,255,255,.05);
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .hero-text h1 {
+      font-size: 3.2rem; font-weight: 900; color: #fff;
+      line-height: 1.15; margin-bottom: 20px;
       letter-spacing: -.5px;
     }
-    .topbar-logo span em {
-      color: #e65100;
-      font-style: normal;
+    .hero-text h1 span { color: #7dd3fc; }
+    .hero-text p {
+      font-size: 1.15rem; color: rgba(255,255,255,.85);
+      line-height: 1.7; margin-bottom: 36px; max-width: 520px;
     }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 18px;
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-hero-primary {
+      padding: 15px 32px; background: #fff; color: #1e6dc0;
+      border: none; border-radius: 8px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; transition: all .18s; letter-spacing: .2px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18);
     }
-    .topbar-right a {
-      font-size: .9rem;
-      color: #555;
-      text-decoration: none;
+    .btn-hero-primary:hover { background: #e8f4ff; transform: translateY(-2px); }
+    .btn-hero-secondary {
+      padding: 15px 32px; background: transparent; color: #fff;
+      border: 2px solid rgba(255,255,255,.6); border-radius: 8px;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: all .18s;
     }
-    .topbar-right a:hover { color: #1565c0; }
+    .btn-hero-secondary:hover { border-color: #fff; background: rgba(255,255,255,.1); }
 
-    /* Hero */
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 60px 20px 40px;
+    /* Stats bar */
+    .stats-bar {
+      display: flex; gap: 40px; margin-top: 48px; flex-wrap: wrap;
     }
-    .hero h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
-      text-align: center;
-    }
-    .hero p {
-      font-size: 1rem;
-      color: #90caf9;
-      margin-bottom: 36px;
-      text-align: center;
-    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 900; color: #fff; }
+    .stat-label { font-size: .8rem; color: rgba(255,255,255,.7); letter-spacing: .5px; text-transform: uppercase; }
 
-    /* District card */
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      width: min(420px, 92vw);
-      padding: 36px 36px 28px;
-      box-shadow: 0 8px 40px rgba(0,0,0,.25);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* Hero right — mockup card */
+    .hero-mockup {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
     }
-    .district-badge {
-      width: 72px; height: 72px;
-      background: #e3f2fd;
-      border-radius: 50%;
+    .mockup-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    }
+    .mockup-header img { height: 28px; }
+    .mockup-header span { color: #fff; font-weight: 700; font-size: 1rem; }
+    .mockup-search {
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 8px; padding: 10px 14px; color: rgba(255,255,255,.7);
+      font-size: .9rem; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .app-tile {
+      background: rgba(255,255,255,.12); border-radius: 10px;
+      padding: 14px 8px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      transition: background .15s; cursor: default;
+    }
+    .app-tile:hover { background: rgba(255,255,255,.2); }
+    .app-tile img { width: 36px; height: 36px; border-radius: 8px; }
+    .app-tile span { font-size: .68rem; color: rgba(255,255,255,.85); font-weight: 600; }
+
+    /* ── LOGOS STRIP ── */
+    .logos-strip {
+      background: #f8f9fb; padding: 32px 40px;
+      border-bottom: 1px solid #eee;
+    }
+    .logos-strip p {
+      text-align: center; font-size: .82rem; font-weight: 700;
+      color: #888; letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .logos-row {
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 14px;
+      gap: 48px; flex-wrap: wrap;
     }
-    .district-badge svg { width: 40px; height: 40px; }
-    .card h2 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #1565c0;
-      margin-bottom: 4px;
-      text-align: center;
+    .logos-row img { height: 28px; opacity: .45; filter: grayscale(1); transition: opacity .2s; }
+    .logos-row img:hover { opacity: .7; }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 90px 40px; max-width: 1200px; margin: 0 auto;
     }
-    .card .sub {
-      font-size: .85rem;
-      color: #888;
-      margin-bottom: 28px;
-      text-align: center;
+    .section-label {
+      font-size: .8rem; font-weight: 800; color: #1e6dc0;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 2.4rem; font-weight: 900; color: #0d1b3e;
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .section-sub { font-size: 1.05rem; color: #555; max-width: 600px; line-height: 1.7; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+      margin-top: 56px;
+    }
+    .feature-card {
+      border: 1px solid #e8ecf2; border-radius: 14px; padding: 32px 28px;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .feature-card:hover { box-shadow: 0 8px 32px rgba(30,109,192,.1); transform: translateY(-3px); }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: #e8f2ff; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; font-size: 1.5rem;
+    }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 800; color: #0d1b3e; margin-bottom: 10px; }
+    .feature-card p { font-size: .9rem; color: #666; line-height: 1.6; }
+    .feature-card a { color: #1e6dc0; font-weight: 700; font-size: .88rem; display: inline-block; margin-top: 12px; }
+
+    /* ── BLUE CTA BAND ── */
+    .cta-band {
+      background: linear-gradient(135deg, #0a2d6e, #1e6dc0);
+      padding: 70px 40px; text-align: center;
+    }
+    .cta-band h2 { font-size: 2.2rem; font-weight: 900; color: #fff; margin-bottom: 12px; }
+    .cta-band p { font-size: 1.05rem; color: rgba(255,255,255,.8); margin-bottom: 32px; }
+    .cta-band-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-white {
+      padding: 14px 34px; background: #fff; color: #1e6dc0;
+      border: none; border-radius: 8px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; transition: all .18s;
+    }
+    .btn-cta-white:hover { background: #e8f4ff; }
+    .btn-cta-outline {
+      padding: 14px 34px; background: transparent; color: #fff;
+      border: 2px solid rgba(255,255,255,.5); border-radius: 8px;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: all .18s;
+    }
+    .btn-cta-outline:hover { border-color: #fff; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d1b3e; color: rgba(255,255,255,.6);
+      padding: 60px 40px 30px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px;
+      max-width: 1200px; margin: 0 auto 40px;
+    }
+    .footer-brand img { height: 36px; margin-bottom: 16px; }
+    .footer-brand p { font-size: .85rem; line-height: 1.6; max-width: 240px; }
+    .footer-col h4 {
+      font-size: .8rem; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #fff; margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block; font-size: .87rem; color: rgba(255,255,255,.55);
+      margin-bottom: 8px; transition: color .15s;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 24px; max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .8rem; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.5); margin-left: 20px; }
+    .footer-bottom a:hover { color: #fff; }
+
+    /* ── LAUNCHPAD PORTAL BUTTON (secret entry) ── */
+    .launchpad-portal {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: #1e6dc0; color: #fff;
+      border: none; border-radius: 50px;
+      padding: 13px 26px 13px 18px;
+      font-family: 'Lato', Arial, sans-serif;
+      font-size: .9rem; font-weight: 800;
+      cursor: pointer; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 6px 24px rgba(30,109,192,.45);
+      transition: all .2s; letter-spacing: .3px;
+    }
+    .launchpad-portal:hover { background: #1558a8; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(30,109,192,.5); }
+    .launchpad-portal .lp-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #7dd3fc; animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(1.3); }
     }
 
-    .btn-sso {
-      width: 100%;
-      padding: 13px;
-      background: #1565c0;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: .3px;
-      margin-bottom: 12px;
-      transition: background .15s;
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-mockup { display: none; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
     }
-    .btn-sso:hover { background: #1976d2; }
-
-    .btn-google {
-      width: 100%;
-      padding: 12px;
-      background: #fff;
-      color: #444;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      font-size: .95rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      transition: background .15s;
-      text-decoration: none;
-      margin-bottom: 10px;
+    @media (max-width: 600px) {
+      .hero-text h1 { font-size: 2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .nav { padding: 0 20px; }
+      .hero { padding: 60px 20px; }
     }
-    .btn-google:hover { background: #f5f5f5; }
-    .btn-google img { width: 20px; height: 20px; }
-
-    .divider {
-      width: 100%;
-      display: flex; align-items: center; gap: 10px;
-      margin: 6px 0 14px;
-      color: #bbb; font-size: .8rem;
-    }
-    .divider::before, .divider::after {
-      content: ""; flex: 1; height: 1px; background: #e0e0e0;
-    }
-
-    /* Secret click-now button — styled as innocent "Student Portal" link */
-    .portal-link {
-      margin-top: 8px;
-      font-size: .82rem;
-      color: #90caf9;
-      text-align: center;
-    }
-    .portal-link a {
-      color: #e65100;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-size: inherit;
-      font-family: inherit;
-      padding: 0;
-    }
-    .portal-link a:hover { text-decoration: underline; }
-
-    /* Footer */
-    .footer {
-      background: #07305a;
-      text-align: center;
-      padding: 14px;
-      font-size: .78rem;
-      color: #5c8fb0;
-    }
-    .footer a { color: #5c8fb0; text-decoration: none; }
-    .footer a:hover { color: #90caf9; }
-
-    /* tiles strip */
-    .tiles {
-      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-      margin-top: 40px; padding: 0 20px;
-    }
-    .tile {
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 10px;
-      width: 90px; height: 90px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 6px; color: #fff; font-size: .72rem; font-weight: 600;
-      text-align: center; cursor: default;
-      transition: background .15s;
-    }
-    .tile:hover { background: rgba(255,255,255,.14); }
-    .tile img { width: 36px; height: 36px; border-radius: 6px; }
   </style>
 </head>
 <body>
 
-  <!-- Top navigation bar -->
-  <div class="topbar">
-    <a class="topbar-logo" href="#">
-      <!-- ClassLink-style logo mark -->
-      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="36" height="36" rx="8" fill="#1565c0"/>
-        <path d="M10 18a8 8 0 1 1 8 8" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="18" cy="18" r="3" fill="#e65100"/>
-      </svg>
-      <span>Class<em>Link</em></span>
-    </a>
-    <div class="topbar-right">
-      <a href="#">Help</a>
-      <a href="#">Privacy</a>
-    </div>
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <img src="https://cdn.prod.website-files.com/5d6db64572061db9c481aaeb/64415d0af743837527365f0c_classlink-logo_blue.svg" alt="ClassLink" onerror="this.style.display='none';this.nextSibling.style.display='flex'" />
+    <span style="display:none;align-items:center;gap:8px;font-size:1.4rem;font-weight:900;color:#1e6dc0;">
+      <svg width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="#1e6dc0"/><path d="M10 18a8 8 0 1 1 8 8" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="18" r="3" fill="#7dd3fc"/></svg>
+      Class<span style="color:#e65100;">Link</span>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="#" class="has-dropdown">Products</a>
+    <a href="#" class="has-dropdown">Solutions</a>
+    <a href="#" class="has-dropdown">Resources</a>
+    <a href="#">Pricing</a>
+    <a href="#">Partners</a>
+    <a href="#">Company</a>
   </div>
+  <div class="nav-right">
+    <a class="btn-login" href="#">Log In</a>
+    <a class="btn-demo" href="#">Get a Demo</a>
+  </div>
+</nav>
 
-  <!-- Main hero -->
-  <div class="hero">
-    <h1>Welcome to ClassLink LaunchPad</h1>
-    <p>Sign in to access your school apps and resources</p>
-
-    <div class="card">
-      <div class="district-badge">
-        <!-- School icon -->
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 20L20 8l15 12v14H5V20z" fill="#1565c0" opacity=".2"/>
-          <path d="M5 20L20 8l15 12v14H5V20z" stroke="#1565c0" stroke-width="2"/>
-          <rect x="14" y="26" width="5" height="8" rx="1" fill="#1565c0"/>
-          <rect x="21" y="26" width="5" height="8" rx="1" fill="#1565c0" opacity=".5"/>
-          <rect x="16" y="18" width="4" height="4" rx=".5" fill="#1565c0"/>
-        </svg>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="section-label" style="color:#7dd3fc;margin-bottom:14px;">TRUSTED BY 25 MILLION+ STUDENTS</p>
+      <h1>One Click Access to <span>Every App</span> in Education</h1>
+      <p>ClassLink provides instant single sign-on into web and Windows applications, and instant access to files at school and in the cloud. ClassLink is ideal for 1-to-1 and Bring Your Own Device (BYOD) initiatives.</p>
+      <div class="hero-btns">
+        <button class="btn-hero-primary" onclick="window.location.href='/home'">Access LaunchPad</button>
+        <button class="btn-hero-secondary" onclick="window.location.href='#features'">Learn More</button>
       </div>
-      <h2>Lincoln Unified School District</h2>
-      <p class="sub">Student &amp; Staff Portal</p>
-
-      <button class="btn-sso" onclick="alert('Connecting to district SSO...')">Sign In with SSO</button>
-
-      <div class="divider">or</div>
-
-      <a class="btn-google" href="#">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
-        Continue with Google
-      </a>
-
-      <p class="portal-link">
-        Student access portal &nbsp;—&nbsp;
-        <a href="/home">Click Now</a>
-      </p>
-    </div>
-
-    <!-- App tile strip -->
-    <div class="tiles">
-      <div class="tile">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png" alt="Google" />
-        Google
-      </div>
-      <div class="tile">
-        <img src="https://lh3.googleusercontent.com/vUSx5vBGNzf2iXeaZ7gd7n8yFuDSEpLi8-SLLY6jqPFKLVbfOUuL1BYcjlMwqGBEfk=s180" alt="Classroom" />
-        Classroom
-      </div>
-      <div class="tile">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png" alt="Teams" />
-        Teams
-      </div>
-      <div class="tile">
-        <img src="https://seeklogo.com/images/C/canvas-logo-DE74E2F00C-seeklogo.com.png" alt="Canvas" />
-        Canvas
-      </div>
-      <div class="tile">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/IXL_logo.svg/2560px-IXL_logo.svg.png" alt="IXL" style="border-radius:4px;background:#fff;padding:2px;" />
-        IXL
-      </div>
-      <div class="tile">
-        <img src="https://www.khanacademy.org/favicon.ico" alt="Khan" />
-        Khan Academy
+      <div class="stats-bar">
+        <div class="stat"><div class="stat-num">25M+</div><div class="stat-label">Students</div></div>
+        <div class="stat"><div class="stat-num">2,500+</div><div class="stat-label">Districts</div></div>
+        <div class="stat"><div class="stat-num">6,000+</div><div class="stat-label">SSO Apps</div></div>
+        <div class="stat"><div class="stat-num">99.99%</div><div class="stat-label">Uptime</div></div>
       </div>
     </div>
+    <div class="hero-mockup">
+      <div class="mockup-header">
+        <img src="https://cdn.prod.website-files.com/5d6db64572061db9c481aaeb/64415d0af743837527365f0c_classlink-logo_blue.svg" alt="ClassLink" style="filter:brightness(10)" onerror="this.style.display='none'"/>
+        <span>LaunchPad</span>
+      </div>
+      <div class="mockup-search">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,.6)" stroke-width="2"/><path d="m21 21-4.35-4.35" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round"/></svg>
+        Search apps...
+      </div>
+      <div class="app-grid">
+        <div class="app-tile">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png" alt="Google" onerror="this.style.background='#ea4335';this.style.borderRadius='8px'"/>
+          <span>Google</span>
+        </div>
+        <div class="app-tile">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png" alt="Teams"/>
+          <span>Teams</span>
+        </div>
+        <div class="app-tile">
+          <img src="https://seeklogo.com/images/C/canvas-logo-DE74E2F00C-seeklogo.com.png" alt="Canvas"/>
+          <span>Canvas</span>
+        </div>
+        <div class="app-tile">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Clever_logo.svg/2560px-Clever_logo.svg.png" alt="Clever" onerror="this.parentElement.style.background='rgba(255,255,255,.2)'"/>
+          <span>Clever</span>
+        </div>
+        <div class="app-tile">
+          <img src="https://www.khanacademy.org/favicon.ico" alt="Khan"/>
+          <span>Khan</span>
+        </div>
+        <div class="app-tile">
+          <img src="https://lh3.googleusercontent.com/vUSx5vBGNzf2iXeaZ7gd7n8yFuDSEpLi8-SLLY6jqPFKLVbfOUuL1BYcjlMwqGBEfk=s180" alt="Classroom"/>
+          <span>Classroom</span>
+        </div>
+        <div class="app-tile">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/IXL_logo.svg/2560px-IXL_logo.svg.png" alt="IXL" style="background:#fff;padding:2px;border-radius:4px;"/>
+          <span>IXL</span>
+        </div>
+        <div class="app-tile" onclick="window.location.href='/home'" style="cursor:pointer;background:rgba(125,211,252,.2);border:1px solid rgba(125,211,252,.4);">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#7dd3fc" stroke-width="1.5"/><path d="M12 16h8M17 13l3 3-3 3" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span style="color:#7dd3fc;">More</span>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="footer">
-    &copy; 2025 ClassLink, Inc. &nbsp;|&nbsp;
-    <a href="#">Terms of Service</a> &nbsp;|&nbsp;
-    <a href="#">Privacy Policy</a> &nbsp;|&nbsp;
-    <a href="#">Support</a>
+<!-- ── LOGOS ── -->
+<div class="logos-strip">
+  <p>Trusted by districts across the country</p>
+  <div class="logos-row">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" style="height:22px;"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/800px-Microsoft_logo.svg.png" alt="Microsoft" style="height:22px;"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Clever_logo.svg/2560px-Clever_logo.svg.png" alt="Clever" style="height:22px;"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Khan_Academy_Logo.svg/1200px-Khan_Academy_Logo.svg.png" alt="Khan Academy" style="height:26px;"/>
+    <img src="https://seeklogo.com/images/C/canvas-logo-DE74E2F00C-seeklogo.com.png" alt="Canvas" style="height:26px;"/>
   </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="section-label">WHY CLASSLINK</div>
+  <h2 class="section-title">Everything your district needs,<br/>in one place</h2>
+  <p class="section-sub">From single sign-on to advanced analytics, ClassLink gives schools the tools to manage identity, access, and data — securely and at scale.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🔑</div>
+      <h3>LaunchPad SSO</h3>
+      <p>One click access to 6,000+ cloud apps and Windows applications. Students and teachers sign in once and access everything they need.</p>
+      <a href="#">Learn more →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Analytics</h3>
+      <p>Understand and share edtech usage data, measure equitable access, and track return on investment with real-time reporting.</p>
+      <a href="#">Learn more →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>OneSync</h3>
+      <p>Securely provision accounts and automate identity management. Keep student data accurate across all your apps automatically.</p>
+      <a href="#">Learn more →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Roster Server</h3>
+      <p>Roster using open data standards. Share roster data securely with any vendor using OneRoster, LTI, and other open standards.</p>
+      <a href="#">Learn more →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3>MFA &amp; Security</h3>
+      <p>Multi-factor authentication, SAML 2.0, and GDPR/COPPA compliance built in. Protect student data without slowing anyone down.</p>
+      <a href="#">Learn more →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📁</div>
+      <h3>MyFiles</h3>
+      <p>Students and teachers access their files from Google Drive, OneDrive, Dropbox, and more — all from a single unified interface.</p>
+      <a href="#">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BAND ── -->
+<div class="cta-band">
+  <h2>Ready to simplify access for your district?</h2>
+  <p>Join 2,500+ districts who trust ClassLink to power their identity and access management.</p>
+  <div class="cta-band-btns">
+    <button class="btn-cta-white" onclick="window.location.href='/home'">Access LaunchPad</button>
+    <button class="btn-cta-outline" onclick="alert('Demo request form coming soon!')">Schedule a Demo</button>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="https://cdn.prod.website-files.com/5d6db64572061db9c481aaeb/5e3ca51e2f5f6c4e2f67bfcd_classlink-logo_white.svg" alt="ClassLink" onerror="this.style.display='none'"/>
+      <p style="margin-top:12px;">ClassLink is a provider of identity and access management products for education. 45 E Madison Ave, Clifton, NJ 07011</p>
+      <p style="margin-top:12px; font-size:.82rem;">1-888-963-7550</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <a href="#">LaunchPad</a>
+      <a href="#">Analytics</a>
+      <a href="#">OneSync</a>
+      <a href="#">Roster Server</a>
+      <a href="#">MyFiles</a>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <a href="#">K-12 Districts</a>
+      <a href="#">Higher Ed</a>
+      <a href="#">State Level</a>
+      <a href="#">International</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">Blog</a>
+      <a href="#">Case Studies</a>
+      <a href="#">Webinars</a>
+      <a href="#">Help Center</a>
+      <a href="#">API Docs</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Partners</a>
+      <a href="#">Contact</a>
+      <a href="#">Press</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ClassLink, Inc. All rights reserved.</span>
+    <div>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Accessibility</a>
+      <a href="#">Security</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── SECRET LAUNCHPAD BUTTON ── -->
+<button class="launchpad-portal" onclick="window.location.href='/home'">
+  <span class="lp-dot"></span>
+  Open LaunchPad
+</button>
 
 </body>
 </html>
